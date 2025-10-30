@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { TopBar } from "./TopBar";
-import { WelcomeSection } from "./WelcomeSection";
 import { KpiCard } from "./KpiCard";
 import { WaiterRequestModal } from "./WaiterRequestModal";
 import { SunbedBookingModal } from "./SunbedBookingModal";
@@ -9,6 +8,7 @@ import { RestaurantMenuModal } from "./RestaurantMenuModal";
 import { ComingSoonModal } from "./ComingSoonModal";
 import { NotificationsList, type WaiterRequest } from "./NotificationsList";
 import { Button } from "./ui/button";
+import { Card, CardContent } from "./ui/card";
 import { toast } from "sonner@2.0.3";
 import { ArrowLeft } from "lucide-react";
 
@@ -259,14 +259,24 @@ export function SunbedPage({ onBack, guestInfo, onUsernameUpdate, onProfileClick
             Back to Home
           </Button>
 
-          {/* Welcome Section */}
-          <WelcomeSection
-            userName={guestInfo.userName}
-            hotelName={guestInfo.hotelName}
-            roomNumber={guestInfo.roomNumber}
-            sunbedQuota={sunbedQuota}
-            usedQuota={usedQuota}
-          />
+          {/* Sunbed Quota */}
+          <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm text-muted-foreground mb-1">Your Sunbed Quota</h3>
+                  <p className="text-2xl">
+                    <span className="font-bold">{usedQuota}</span>
+                    <span className="text-muted-foreground"> / {sunbedQuota}</span>
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm text-muted-foreground">Available</p>
+                  <p className="text-2xl font-bold text-green-600">{sunbedQuota - usedQuota}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Global KPI Section */}
           <div className="space-y-4">

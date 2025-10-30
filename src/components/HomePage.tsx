@@ -4,6 +4,7 @@ import { TopBar } from './TopBar';
 interface HomePageProps {
   onSelectSunbeds: () => void;
   onSelectRoom: () => void;
+  onSelectActivities: () => void;
   notificationCount: number;
   onNotificationClick: () => void;
   isNotificationsOpen: boolean;
@@ -15,6 +16,7 @@ interface HomePageProps {
 export function HomePage({ 
   onSelectSunbeds, 
   onSelectRoom,
+  onSelectActivities,
   notificationCount,
   onNotificationClick,
   isNotificationsOpen,
@@ -41,11 +43,11 @@ export function HomePage({
         </div>
 
         {/* Selection Cards */}
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Sunbeds Card */}
           <button
             onClick={onSelectSunbeds}
-            className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer transform hover:scale-105 active:scale-100"
+            className="group rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer transform hover:scale-105 active:scale-100"
           >
             <div className="aspect-[4/3] bg-gradient-to-br from-amber-400 to-orange-500 relative overflow-hidden">
               <ImageWithFallback
@@ -62,25 +64,12 @@ export function HomePage({
                 <p className="text-white/90 text-sm mt-2">Book sunbeds, order drinks & food</p>
               </div>
             </div>
-            <div className="p-6 bg-white">
-              <div className="flex items-center justify-between">
-                <span className="text-green-600">Available Now</span>
-                <svg 
-                  className="w-6 h-6 text-blue-600 transform group-hover:translate-x-1 transition-transform" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </div>
           </button>
 
           {/* Room Card */}
           <button
             onClick={onSelectRoom}
-            className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer transform hover:scale-105 active:scale-100"
+            className="group rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer transform hover:scale-105 active:scale-100"
           >
             <div className="aspect-[4/3] bg-gradient-to-br from-purple-400 to-pink-500 relative overflow-hidden">
               <ImageWithFallback
@@ -97,17 +86,26 @@ export function HomePage({
                 <p className="text-white/90 text-sm mt-2">Room service, housekeeping & more</p>
               </div>
             </div>
-            <div className="p-6 bg-white">
-              <div className="flex items-center justify-between">
-                <span className="text-blue-600">Coming Soon</span>
-                <svg 
-                  className="w-6 h-6 text-blue-600 transform group-hover:translate-x-1 transition-transform" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+          </button>
+
+          {/* Activities Card */}
+          <button
+            onClick={onSelectActivities}
+            className="group rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer transform hover:scale-105 active:scale-100"
+          >
+            <div className="aspect-[4/3] bg-gradient-to-br from-teal-400 to-cyan-500 relative overflow-hidden">
+              <ImageWithFallback
+                src="https://images.unsplash.com/photo-1669565400547-d93c042debc0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzcGElMjBtYXNzYWdlJTIwcmVzb3J0fGVufDF8fHx8MTc2MTgzNjE4NHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                alt="Spa and wellness"
+                className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <div className="inline-block bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-3">
+                  <p className="text-white text-sm">🎯 Coming Soon</p>
+                </div>
+                <h3 className="text-white">Hotel Activities</h3>
+                <p className="text-white/90 text-sm mt-2">Excursions, spa, massage, sports & more</p>
               </div>
             </div>
           </button>
