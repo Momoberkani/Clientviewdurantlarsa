@@ -1,9 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  --font-family: 'Inter', sans-serif;
   --font-size: 14px;
-  --background: #ffffff;
+  --background: #F2F3F4;
   --foreground: oklch(0.145 0 0);
+  --title-color: #F2F3F4;
   --card: #ffffff;
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -81,6 +85,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-title: var(--title-color);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
@@ -122,10 +127,12 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    font-family: var(--font-family);
   }
 
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-family);
   }
 }
 
@@ -138,24 +145,28 @@
       font-size: var(--text-2xl);
       font-weight: var(--font-weight-medium);
       line-height: 1.5;
+      color: var(--title-color);
     }
 
     h2 {
       font-size: var(--text-xl);
       font-weight: var(--font-weight-medium);
       line-height: 1.5;
+      color: var(--title-color);
     }
 
     h3 {
       font-size: var(--text-lg);
       font-weight: var(--font-weight-medium);
       line-height: 1.5;
+      color: var(--title-color);
     }
 
     h4 {
       font-size: var(--text-base);
       font-weight: var(--font-weight-medium);
       line-height: 1.5;
+      color: var(--title-color);
     }
 
     p {

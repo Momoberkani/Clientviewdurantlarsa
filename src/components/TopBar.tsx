@@ -7,13 +7,20 @@ interface TopBarProps {
   onNotificationClick: () => void;
   isNotificationsOpen: boolean;
   onProfileClick: () => void;
+  userName?: string;
+  roomNumber?: string;
 }
 
-export function TopBar({ notificationCount, onNotificationClick, isNotificationsOpen, onProfileClick }: TopBarProps) {
+export function TopBar({ notificationCount, onNotificationClick, isNotificationsOpen, onProfileClick, userName, roomNumber }: TopBarProps) {
   return (
     <div className="flex justify-between items-center p-4 bg-card border-b border-border">
       <div className="flex items-center gap-3">
-        <h1 className="text-xl font-medium">Sunbed Booking</h1>
+        <div>
+          <h1 className="text-xl font-medium">Hotel Reservation</h1>
+          {userName && roomNumber && (
+            <p className="text-sm text-muted-foreground">{userName} - Room {roomNumber}</p>
+          )}
+        </div>
       </div>
       
       <div className="flex items-center gap-2">
