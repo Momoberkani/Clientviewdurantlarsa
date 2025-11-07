@@ -21,7 +21,7 @@ export function KpiCard({ title, value, status, onClick }: KpiCardProps) {
     }
   };
 
-  const isClickable = status === "Available soon" && onClick;
+  const isClickable = (status === "Available soon" || status === "Available") && onClick;
 
   return (
     <Card 

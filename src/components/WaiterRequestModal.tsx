@@ -131,19 +131,6 @@ export function WaiterRequestModal({ open, onOpenChange, onConfirm, sunbedId }: 
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem 
-                  value="order" 
-                  id="order" 
-                  disabled={!isServiceEnabled}
-                />
-                <Label 
-                  htmlFor="order" 
-                  className={`cursor-pointer ${!isServiceEnabled ? "text-muted-foreground cursor-not-allowed" : ""}`}
-                >
-                  Place an order
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem 
                   value="other" 
                   id="other" 
                   disabled={!isServiceEnabled}

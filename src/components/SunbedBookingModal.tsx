@@ -21,7 +21,7 @@ interface Sunbed {
 interface SunbedBookingModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onConfirm: (sunbedIds: string[]) => void;
+  onConfirm: (sunbedIds: string[], duration: number) => void;
   availableSunbeds: Sunbed[];
   remainingQuota: number;
 }
@@ -30,6 +30,7 @@ export function SunbedBookingModal({ open, onOpenChange, onConfirm, availableSun
   const [selectedSunbedIds, setSelectedSunbedIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedZones, setSelectedZones] = useState<string[]>([]);
+  const [duration, setDuration] = useState(120); // Duration in minutes, default 2 hours
   const isMobile = useIsMobile();
   const isMultiSelect = remainingQuota > 1;
 
@@ -38,10 +39,11 @@ export function SunbedBookingModal({ open, onOpenChange, onConfirm, availableSun
 
   const handleConfirm = () => {
     if (selectedSunbedIds.length > 0) {
-      onConfirm(selectedSunbedIds);
+      onConfirm(selectedSunbedIds, duration);
       onOpenChange(false);
       setSelectedSunbedIds([]);
       setSearchQuery("");
+      setDuration(120); // Reset to default
     }
   };
 
@@ -51,6 +53,7 @@ export function SunbedBookingModal({ open, onOpenChange, onConfirm, availableSun
       setSelectedSunbedIds([]);
       setSearchQuery("");
       setSelectedZones([]);
+      setDuration(120); // Reset to default
     }
   };
 

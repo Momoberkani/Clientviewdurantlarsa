@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
-import { TopBar } from "./TopBar";
-import { KpiCard } from "./KpiCard";
-import { WaiterRequestModal } from "./WaiterRequestModal";
-import { SunbedBookingModal } from "./SunbedBookingModal";
-import { BookingInProgress } from "./BookingInProgress";
-import { RestaurantMenuModal } from "./RestaurantMenuModal";
-import { ComingSoonModal } from "./ComingSoonModal";
-import { NotificationsList, type WaiterRequest } from "./NotificationsList";
+import { toast } from "sonner@2.0.3";
+import { ArrowLeft, Bed, Bell, UtensilsCrossed } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
-import { toast } from "sonner@2.0.3";
-import { ArrowLeft } from "lucide-react";
+import { KpiCard } from "./KpiCard";
+import { SunbedBookingModal } from "./SunbedBookingModal";
+import { WaiterRequestModal, WaiterRequest } from "./WaiterRequestModal";
+import { RestaurantMenuModal } from "./RestaurantMenuModal";
+import { BookingInProgress } from "./BookingInProgress";
+import { TopBar } from "./TopBar";
+import { NotificationsList } from "./NotificationsList";
+import { ComingSoonModal } from "./ComingSoonModal";
+import { AvailableSunbedsModal } from "./AvailableSunbedsModal";
 
 interface Sunbed {
   id: string;
@@ -38,6 +39,7 @@ export function SunbedPage({ onBack, guestInfo, onUsernameUpdate, onProfileClick
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
   const [isComingSoonModalOpen, setIsComingSoonModalOpen] = useState(false);
+  const [isAvailableModalOpen, setIsAvailableModalOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [activeBookings, setActiveBookings] = useState<{
     sunbedId: string;
@@ -105,22 +107,44 @@ export function SunbedPage({ onBack, guestInfo, onUsernameUpdate, onProfileClick
     },
   ];
 
-  const handleBookSunbed = () => {
-    const remainingQuota = sunbedQuota - usedQuota;
-    if (remainingQuota > 0) {
-      setIsBookingModalOpen(true);
-    }
+  const handleBookingSunbed = (sunbedIds: string[], duration: number) => {
+    // Add new bookings (duration is in minutes)
+    const newBookings = sunbedIds.map(id => ({ sunbedId: id, duration }));
+    setActiveBookings([...activeBookings, ...newBookings]);
+    
+    // Convert minutes to hours for display
+    const hours = Math.floor(duration / 60);
+    const mins = duration % 60;
+    const durationStr = mins > 0 ? `${hours}h ${mins}m` : `${hours} hour${hours > 1 ? 's' : ''}`;
+    
+    // Show success toast
+    toast.success(
+      sunbedIds.length > 1 
+        ? `${sunbedIds.length} sunbeds booked successfully` 
+        : `Sunbed ${sunbedIds[0]} booked successfully`,
+      {
+        description: `Duration: ${durationStr}`,
+        className: "bg-green-50 border-green-200",
+      }
+    );
+    
+    setIsBookingModalOpen(false);
   };
 
-  const handleConfirmBooking = (sunbedIds: string[]) => {
-    const newBookings = sunbedIds.map(sunbedId => ({ sunbedId, duration: 120 })); // 2 hours default
-    setActiveBookings(prev => [...prev, ...newBookings]);
+  const handleQuickBookSunbed = (sunbedId: string) => {
+    // Quick book for 2 hours from available modal (duration in minutes)
+    const defaultDuration = 120; // 2 hours in minutes
+    const newBooking = { sunbedId, duration: defaultDuration };
+    setActiveBookings([...activeBookings, newBooking]);
     
-    if (sunbedIds.length === 1) {
-      toast.success(`Sunbed ${sunbedIds[0]} booked successfully`);
-    } else {
-      toast.success(`${sunbedIds.length} sunbeds booked successfully: ${sunbedIds.join(", ")}`);
-    }
+    // Show success toast
+    toast.success(
+      `Sunbed ${sunbedId} booked successfully`,
+      {
+        description: `Duration: 2 hours`,
+        className: "bg-green-50 border-green-200",
+      }
+    );
   };
 
   const handleReleaseSunbed = (sunbedId: string) => {
@@ -259,28 +283,17 @@ export function SunbedPage({ onBack, guestInfo, onUsernameUpdate, onProfileClick
             Back to Home
           </Button>
 
-          {/* Sunbed Quota */}
-          <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
-            <CardContent className="p-4 sm:p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-sm text-muted-foreground mb-1">Your Sunbed Quota</h3>
-                  <p className="text-2xl">
-                    <span className="font-bold">{usedQuota}</span>
-                    <span className="text-muted-foreground"> / {sunbedQuota}</span>
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm text-muted-foreground">Available</p>
-                  <p className="text-2xl font-bold text-green-600">{sunbedQuota - usedQuota}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          {/* Title and Instructions */}
+          <div className="space-y-2">
+            <h1>Book your sunbed</h1>
+            <p className="text-sm text-muted-foreground">
+              Check the availability status below, then select your preferred sunbed from the available options. You can book up to {sunbedQuota} sunbeds at once.
+            </p>
+          </div>
 
-          {/* Global KPI Section */}
+          {/* Global KPI Section - Sunbed Statuses */}
           <div className="space-y-4">
-            <h1>Sunbed Status</h1>
+            <h2>Sunbed Status</h2>
             <div className="grid grid-cols-3 gap-3 sm:gap-4">
               {kpiData.map((kpi, index) => (
                 <KpiCard
@@ -288,7 +301,11 @@ export function SunbedPage({ onBack, guestInfo, onUsernameUpdate, onProfileClick
                   title={kpi.title}
                   value={kpi.value}
                   status={kpi.status}
-                  onClick={kpi.status === "Available soon" ? () => setIsComingSoonModalOpen(true) : undefined}
+                  onClick={
+                    kpi.status === "Available soon" ? () => setIsComingSoonModalOpen(true) :
+                    kpi.status === "Available" ? () => setIsAvailableModalOpen(true) :
+                    undefined
+                  }
                 />
               ))}
             </div>
@@ -312,47 +329,102 @@ export function SunbedPage({ onBack, guestInfo, onUsernameUpdate, onProfileClick
 
         {/* Action Buttons Section */}
         <div className="space-y-3 sm:space-y-4">
-          <Button
-            size="lg"
-            className="w-full cursor-pointer bg-green-600 text-white border-green-600 hover:bg-green-700 hover:border-green-700 disabled:bg-gray-400 disabled:text-gray-600 disabled:border-gray-400 disabled:hover:bg-gray-400 disabled:hover:border-gray-400 touch-manipulation"
-            onClick={handleBookSunbed}
-            disabled={usedQuota >= sunbedQuota}
+          {/* Book a Sunbed Card */}
+          <Card 
+            className={`cursor-pointer transition-all hover:shadow-md ${
+              usedQuota >= sunbedQuota 
+                ? 'opacity-60 cursor-not-allowed' 
+                : 'hover:border-violet-300'
+            }`}
+            onClick={usedQuota >= sunbedQuota ? undefined : () => setIsBookingModalOpen(true)}
           >
-            {usedQuota >= sunbedQuota 
-              ? "Quota Reached" 
-              : `Book ${sunbedQuota - usedQuota > 1 ? "Sunbeds" : "a Sunbed"} (${sunbedQuota - usedQuota} left)`}
-          </Button>
+            <CardContent className="p-4 sm:p-5">
+              <div className="flex items-start gap-4">
+                <div className={`p-3 rounded-lg ${
+                  usedQuota >= sunbedQuota 
+                    ? 'bg-gray-200' 
+                    : 'bg-violet-100'
+                }`}>
+                  <Bed className={`w-6 h-6 ${
+                    usedQuota >= sunbedQuota 
+                      ? 'text-gray-500' 
+                      : 'text-violet-600'
+                  }`} />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-start justify-between mb-2">
+                    <h3>
+                      {usedQuota >= sunbedQuota ? "Quota Reached" : "Book a Sunbed"}
+                    </h3>
+                    <div className="text-right ml-4 flex-shrink-0">
+                      <p className="text-xs text-muted-foreground">Your Quota</p>
+                      <p className="text-sm">
+                        <span className="font-bold">{usedQuota}</span>
+                        <span className="text-muted-foreground"> / {sunbedQuota}</span>
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground pr-16">
+                    {usedQuota >= sunbedQuota 
+                      ? "You've reached your maximum sunbed quota" 
+                      : `Select from available sunbeds across all zones. ${sunbedQuota - usedQuota} ${sunbedQuota - usedQuota > 1 ? 'spots' : 'spot'} remaining`}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-          {/* Show global Call a Waiter button when there are 0 or 1 bookings */}
+          {/* Order Food & Drinks Card */}
+          <Card 
+            className="cursor-pointer transition-all hover:shadow-md hover:border-amber-300"
+            onClick={() => setIsMenuModalOpen(true)}
+          >
+            <CardContent className="p-4 sm:p-5">
+              <div className="flex items-start gap-4">
+                <div className="p-3 rounded-lg bg-amber-100">
+                  <UtensilsCrossed className="w-6 h-6 text-amber-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="mb-1">Order Food & Drinks</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Browse our menu and place orders directly to your sunbed
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Call a Waiter Card - Show when there are 0 or 1 bookings */}
           {activeBookings.length <= 1 && (
-            <Button
-              variant="outline"
-              size="lg"
-              className="w-full bg-blue-600 text-white border-blue-600 hover:bg-blue-700 hover:border-blue-700 cursor-pointer touch-manipulation"
+            <Card 
+              className="cursor-pointer transition-all hover:shadow-md hover:border-blue-300"
               onClick={() => {
                 setCurrentWaiterRequestSunbedId(activeBookings.length > 0 ? activeBookings[0].sunbedId : undefined);
                 setIsWaiterModalOpen(true);
               }}
             >
-              Call a Waiter
-            </Button>
+              <CardContent className="p-4 sm:p-5">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-lg bg-blue-100">
+                    <Bell className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="mb-1">Call a Waiter</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Request towels or ask for assistance
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           )}
-
-          <Button
-            variant="outline"
-            size="lg"
-            className="w-full cursor-pointer touch-manipulation"
-            onClick={() => setIsMenuModalOpen(true)}
-          >
-            See the drinks/food
-          </Button>
         </div>
 
         {/* Sunbed Booking Modal */}
         <SunbedBookingModal
           open={isBookingModalOpen}
           onOpenChange={setIsBookingModalOpen}
-          onConfirm={handleConfirmBooking}
+          onConfirm={handleBookingSunbed}
           availableSunbeds={availableSunbeds}
           remainingQuota={sunbedQuota - usedQuota}
         />
@@ -388,6 +460,16 @@ export function SunbedPage({ onBack, guestInfo, onUsernameUpdate, onProfileClick
           open={isComingSoonModalOpen}
           onOpenChange={setIsComingSoonModalOpen}
           comingSoonSunbeds={comingSoonSunbeds}
+        />
+
+        {/* Available Sunbeds Modal */}
+        <AvailableSunbedsModal
+          open={isAvailableModalOpen}
+          onOpenChange={setIsAvailableModalOpen}
+          availableSunbeds={availableSunbeds}
+          onBookSunbed={handleQuickBookSunbed}
+          usedQuota={usedQuota}
+          sunbedQuota={sunbedQuota}
         />
         </div>
       </div>

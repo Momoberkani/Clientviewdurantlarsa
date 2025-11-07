@@ -57,8 +57,8 @@ export function HomePage({
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6">
-                <div className="inline-block bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-3">
-                  <p className="text-white text-sm">☀️ Pool & Beach</p>
+                <div className="bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-3 w-fit min-w-[150px] text-center">
+                  <p className="text-white text-sm whitespace-nowrap">☀️ Pool & Beach</p>
                 </div>
                 <h3 className="text-white">Sunbeds</h3>
                 <p className="text-white/90 text-sm mt-2">Book sunbeds, order drinks & food</p>
@@ -79,8 +79,8 @@ export function HomePage({
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6">
-                <div className="inline-block bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-3">
-                  <p className="text-white text-sm">🏨 Accommodation</p>
+                <div className="bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-3 w-fit min-w-[150px] text-center">
+                  <p className="text-white text-sm whitespace-nowrap">🏨 Accommodation</p>
                 </div>
                 <h3 className="text-white">Room</h3>
                 <p className="text-white/90 text-sm mt-2">Room service, housekeeping & more</p>
@@ -97,12 +97,12 @@ export function HomePage({
               <ImageWithFallback
                 src="https://images.unsplash.com/photo-1669565400547-d93c042debc0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzcGElMjBtYXNzYWdlJTIwcmVzb3J0fGVufDF8fHx8MTc2MTgzNjE4NHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
                 alt="Spa and wellness"
-                className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+                className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300 grayscale"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6">
-                <div className="inline-block bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-3">
-                  <p className="text-white text-sm">🎯 Coming Soon</p>
+                <div className="bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-3 w-fit min-w-[150px] text-center">
+                  <p className="text-white text-sm whitespace-nowrap">🎯 Coming Soon</p>
                 </div>
                 <h3 className="text-white">Hotel Activities</h3>
                 <p className="text-white/90 text-sm mt-2">Excursions, spa, massage, sports & more</p>

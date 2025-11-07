@@ -37,6 +37,9 @@ export function NotificationsModal({
   };
 
   const formatTime = (timestamp: Date) => {
+    if (!timestamp || !(timestamp instanceof Date) || isNaN(timestamp.getTime())) {
+      return 'Just now';
+    }
     return timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 

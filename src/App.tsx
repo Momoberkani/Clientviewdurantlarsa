@@ -105,33 +105,33 @@ export default function App() {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Hotel Activities - Coming Soon! 🎯</DialogTitle>
-            <DialogDescription className="space-y-3 pt-2">
-              <p>
-                We're working hard to bring you an amazing selection of activities and services:
-              </p>
-              <ul className="space-y-2 text-sm">
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-600">🏖️</span>
-                  <span><strong>Excursions:</strong> Beach tours, boat trips, and island adventures</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-600">💆</span>
-                  <span><strong>Spa & Wellness:</strong> Massages, facials, and relaxation treatments</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-600">⚽</span>
-                  <span><strong>Sports:</strong> Tennis, water sports, fitness classes</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-teal-600">🎭</span>
-                  <span><strong>Entertainment:</strong> Shows, activities, and special events</span>
-                </li>
-              </ul>
-              <p className="text-sm text-muted-foreground pt-2">
-                In the meantime, please contact our concierge desk for booking assistance.
-              </p>
+            <DialogDescription>
+              We're working hard to bring you an amazing selection of activities and services.
             </DialogDescription>
           </DialogHeader>
+          <div className="space-y-3 pt-2">
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="text-teal-600">🏖️</span>
+                <span><strong>Excursions:</strong> Beach tours, boat trips, and island adventures</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-teal-600">💆</span>
+                <span><strong>Spa & Wellness:</strong> Massages, facials, and relaxation treatments</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-teal-600">⚽</span>
+                <span><strong>Sports:</strong> Tennis, water sports, fitness classes</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-teal-600">🎭</span>
+                <span><strong>Entertainment:</strong> Shows, activities, and special events</span>
+              </li>
+            </ul>
+            <p className="text-sm text-muted-foreground pt-2">
+              In the meantime, please contact our concierge desk for booking assistance.
+            </p>
+          </div>
         </DialogContent>
       </Dialog>
 
